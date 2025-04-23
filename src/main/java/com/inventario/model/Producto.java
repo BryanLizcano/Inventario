@@ -1,11 +1,13 @@
-package com.inventario.models;
+package com.inventario.model;
+
+import com.inventario.model.Categoria;
 
 import java.util.Objects;
 
 public class Producto {
     private int id;
     private String nombre;
-    private String categoria;
+    private Categoria categoria;
     private double precioCosto;
     private double precioVenta;
     private int stock;
@@ -13,7 +15,7 @@ public class Producto {
     // Constructor
     public Producto() {}
 
-    public Producto(String nombre, String categoria, double precioCosto, double precioVenta, int stock) {
+    public Producto(String nombre, Categoria categoria, double precioCosto, double precioVenta, int stock) {
         this.nombre = nombre;
         this.categoria = categoria;
         this.precioCosto = precioCosto;
@@ -28,8 +30,8 @@ public class Producto {
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getCategoria() { return categoria; }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
+    public Categoria getCategoria() { return categoria; }
+    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
 
     public double getPrecioCosto() { return precioCosto; }
     public void setPrecioCosto(double precioCosto) { this.precioCosto = precioCosto; }

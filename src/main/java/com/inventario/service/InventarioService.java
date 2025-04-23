@@ -1,34 +1,23 @@
 package com.inventario.service;
 
+import com.inventario.models.Producto;
+
+import java.sql.SQLException;
+
 public class InventarioService {
-    private ProductoDAO productoDao = new ProductoDAOImpl();
-    private VentaDAO ventaDao = new VentaDAOImpl();
+    private GestorBaseDeDatos db;
+    public InventarioService(GestorBaseDeDatos db) { this.db = db; }
 
-    public void realizarVenta(Venta venta) throws InventarioException {
-        try {
-            // Validar stock
-            for (DetalleVenta detalle : venta.getDetalles()) {
-                Producto p = productoDao.buscarPorId(detalle.getProducto().getId());
-                if (p.getStock() < detalle.getCantidad()) {
-                    throw new InventarioException("Stock insuficiente para: " + p.getNombre());
-                }
-            }
-
-            // Actualizar base de datos
-            ventaDao.guardarVenta(venta);
-            actualizarStocks(venta);
-
-        } catch (SQLException e) {
-            throw new InventarioException("Error en base de datos: " + e.getMessage());
+    public void agregarProducto(Producto p) throws SQLException {
+        String sql = "INSERT INTO producto(nombre,categoria,costoCompra,precioVenta,stock) VALUES(?,?,?,?,?)";
+        try (var ps = db.getConnection().prepareStatement(sql)) {
+            ps.setString(1, p.getNombre());
+            ps.setString(2, p.getCategoria().name());
+            ps.setDouble(3, p.getPrecioCosto());
+            ps.setDouble(4, p.getPrecioVenta());
+            ps.setInt(5, p.getStock());
+            ps.executeUpdate();
         }
     }
-
-    private void actualizarStocks(Venta venta) throws SQLException {
-        for (DetalleVenta detalle : venta.getDetalles()) {
-            productoDao.actualizarStock(
-                    detalle.getProducto().getId(),
-                    -detalle.getCantidad()
-            );
-        }
-    }
+    // editar, eliminar, listar, buscar por categoría…
 }

@@ -1,25 +1,18 @@
 package com.inventario;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import jdk.javadoc.internal.tool.Main;
+import com.inventario.ui.MainFrame;
 
-import java.io.IOException;
+import javax.swing.*;
 
-public class AppInventario extends Application {
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(
-                Main.class.getResource("/com/tuempresa/views/main-view.fxml")
-        );
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.setScene(scene);
-        stage.show();
-    }
-
+public class AppInventario {
     public static void main(String[] args) {
-        launch();
+        // Inicialización temprana de recursos
+        DatabaseInitializer.initialize();
+        ServicesInitializer.configure();
+
+        SwingUtilities.invokeLater(() -> {
+            MainFrame mainFrame = new MainFrame();
+            mainFrame.setVisible(true);
+        });
     }
 }
