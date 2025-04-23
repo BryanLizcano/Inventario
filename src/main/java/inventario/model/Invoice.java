@@ -7,7 +7,7 @@ public abstract class Invoice {
     int id;
     LocalDate fecha;
     List<InvoiceItem> items;
-    double calcularTotal() { return 0; }
+    public double calcularTotal() { return 0; }
 
     public int getId() {
         return id;

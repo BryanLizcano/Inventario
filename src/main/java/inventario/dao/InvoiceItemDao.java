@@ -10,4 +10,3 @@ public interface InvoiceItemDao {
     void insertarItem(int facturaId, InvoiceItem item) throws SQLException;
     List<InvoiceItem> listarPorFactura(int facturaId) throws SQLException;
 }
-c
