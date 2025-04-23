@@ -32,5 +32,18 @@ public class InventarioService {
     public List<Producto> listarPorCategoria(Categoria c) throws SQLException {
         return productoDAO.buscarPorCategoria(c);
     }
+
+    public void ajustarStock(int productoId, int delta) throws SQLException {
+        // 1. Cargar el producto desde la BD
+        Producto p = productoDAO.obtenerPorId(productoId);
+        if (p == null) {
+            throw new SQLException("Producto no encontrado con id=" + productoId);
+        }
+        // 2. Ajustar stock
+        p.setStock(p.getStock() + delta);
+        if (p.getStock() < 0) p.setStock(0); // opcional: evitar negativos
+        // 3. Persistir el nuevo stock
+        productoDAO.actualizar(p);
+    }
 }
 

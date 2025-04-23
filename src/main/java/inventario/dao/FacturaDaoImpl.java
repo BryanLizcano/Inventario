@@ -18,27 +18,35 @@ public class FacturaDaoImpl implements FacturaDao {
 
     @Override
     public int crearFactura(Invoice inv) throws SQLException {
-        String sql = "INSERT INTO factura(tipo, fecha, proveedor, numero_factura, cliente_id, estado) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO factura(tipo, fecha, proveedor, numero_factura, cliente_id, estado) "
+                + "VALUES (?,?,?,?,?,?)";
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, inv instanceof PurchaseInvoice ? "COMPRA" : "VENTA");
+            boolean isCompra = inv instanceof PurchaseInvoice;
+            ps.setString(1, isCompra ? "COMPRA" : "VENTA");
             ps.setString(2, inv.getFecha().toString());
-            if (inv instanceof PurchaseInvoice) {
+
+            if (isCompra) {
                 PurchaseInvoice pi = (PurchaseInvoice) inv;
                 ps.setString(3, pi.getProveedor());
                 ps.setString(4, pi.getNumeroFactura());
                 ps.setNull(5, Types.INTEGER);
             } else {
+                SaleInvoice si = (SaleInvoice) inv;
                 ps.setNull(3, Types.VARCHAR);
                 ps.setNull(4, Types.VARCHAR);
-                ps.setInt(5, ((SaleInvoice) inv).getCliente().getId());
+                if (si.getCliente() == null) {
+                    ps.setNull(5, Types.INTEGER);       // <- aquí evitamos el NPE
+                } else {
+                    ps.setInt(5, si.getCliente().getId());
+                }
             }
             ps.setString(6, "CERRADA");
             ps.executeUpdate();
+
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    int id = rs.getInt(1);
-                    inv.setId(id);
-                    return id;
+                    inv.setId(rs.getInt(1));
+                    return inv.getId();
                 }
             }
         }

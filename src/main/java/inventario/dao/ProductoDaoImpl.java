@@ -81,6 +81,21 @@ public class ProductoDaoImpl implements ProductoDao {
         }
     }
 
+    @Override
+    public Producto obtenerPorId(int id) throws SQLException {
+        String sql = "SELECT * FROM producto WHERE id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapearProducto(rs);
+                } else {
+                    return null;  // O lanzar excepción si prefieres
+                }
+            }
+        }
+    }
+
     private Producto mapearProducto(ResultSet rs) throws SQLException {
         Producto p = new Producto();
         p.setId(rs.getInt("id"));

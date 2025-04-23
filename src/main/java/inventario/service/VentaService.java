@@ -4,6 +4,7 @@ import inventario.dao.FacturaDao;
 import inventario.dao.InvoiceItemDao;
 import inventario.model.Cliente;
 import inventario.model.InvoiceItem;
+import inventario.model.Producto;
 import inventario.model.SaleInvoice;
 import inventario.db.GestorBaseDeDatos;
 import java.sql.Connection;
@@ -26,11 +27,16 @@ public class VentaService {
         try {
             conn.setAutoCommit(false);
             int idFactura = facturaDAO.crearFactura(inv);
+
             for (InvoiceItem item : inv.getItems()) {
                 itemDAO.insertarItem(idFactura, item);
-                // disminuir stock
-                invService.actualizarProducto(item.getProducto());
+                Producto p = item.getProducto();
+                // 1) Reducir el stock en memoria
+                p.setStock(p.getStock() - item.getCantidad());
+                // 2) Persistir el cambio
+                invService.actualizarProducto(p);
             }
+
             conn.commit();
         } catch (SQLException ex) {
             conn.rollback();
@@ -40,6 +46,5 @@ public class VentaService {
         }
     }
 
-    public void registrarVenta(List<InvoiceItem> items, Cliente cliente) {
-    }
+
 }

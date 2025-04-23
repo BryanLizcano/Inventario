@@ -126,6 +126,14 @@ public class MainController {
         }
     }
 
-    public void createSale(List<InvoiceItem> items, Cliente c) {
+    public void createSale(List<InvoiceItem> items, Cliente cliente) throws SQLException {
+        // 1) Construye la factura de venta
+        SaleInvoice inv = (cliente != null)
+                ? new SaleInvoice(cliente)
+                : new SaleInvoice();
+        inv.getItems().addAll(items);
+
+        // 2) Llama al servicio para persistir factura, items y ajustar stock
+        ventaService.registrarVenta(inv);
     }
 }

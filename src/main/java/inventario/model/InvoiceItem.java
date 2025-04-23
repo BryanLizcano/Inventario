@@ -9,7 +9,10 @@ public class InvoiceItem {
     public InvoiceItem() {
     }
 
-    public InvoiceItem(Producto p, int qty, double costoCompra) {
+    public InvoiceItem(Producto producto, int cantidad, double precioUnitario) {
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
     }
 
     double subTotal() { return cantidad * precioUnitario; }

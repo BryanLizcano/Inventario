@@ -1,13 +1,23 @@
 package inventario.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Invoice {
     int id;
-    LocalDate fecha;
-    List<InvoiceItem> items;
-    public double calcularTotal() { return 0; }
+    LocalDate fecha = LocalDate.now();
+    List<InvoiceItem> items = new ArrayList<>();
+
+    public Invoice() {
+
+    }
+
+    public double calcularTotal() {
+        return items.stream()
+                .mapToDouble(InvoiceItem::subTotal)
+                .sum();
+    }
 
     public int getId() {
         return id;
@@ -32,4 +42,6 @@ public abstract class Invoice {
     public void setItems(List<InvoiceItem> items) {
         this.items = items;
     }
+
+
 }

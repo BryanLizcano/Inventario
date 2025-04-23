@@ -28,7 +28,8 @@ public class CompraService {
             int idFactura = facturaDAO.crearFactura(inv);
             for (InvoiceItem item : inv.getItems()) {
                 itemDAO.insertarItem(idFactura, item);
-                invService.actualizarProducto(item.getProducto()); // ajustar stock, implementar en invService
+                // → SUMAMOS stock
+                invService.ajustarStock(item.getProducto().getId(), item.getCantidad());
             }
             conn.commit();
         } catch (SQLException ex) {

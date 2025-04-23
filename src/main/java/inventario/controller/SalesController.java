@@ -4,6 +4,7 @@ import inventario.dao.ProductoDaoImpl;
 import inventario.model.Cliente;
 import inventario.model.InvoiceItem;
 import inventario.model.Producto;
+import inventario.model.SaleInvoice;
 import inventario.service.VentaService;
 
 import java.sql.SQLException;
@@ -17,7 +18,14 @@ public class SalesController {
     }
 
     public void createSale(List<InvoiceItem> items, Cliente cliente) throws SQLException {
-        service.registrarVenta(items, cliente);
+        // 1) Construir la factura de venta
+        SaleInvoice inv = (cliente != null)
+                ? new SaleInvoice(cliente)
+                : new SaleInvoice();
+        inv.getItems().addAll(items);
+
+        // 2) Delegar al servicio
+        service.registrarVenta(inv);
     }
 
     /** Obtiene todos los productos para poblar la tabla en la UI */
