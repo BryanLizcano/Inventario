@@ -1,5 +1,6 @@
 package inventario.controller;
 
+import inventario.dao.*;
 import inventario.model.*;
 import inventario.service.CompraService;
 import inventario.service.InventarioService;
@@ -12,10 +13,30 @@ import java.util.List;
 import java.util.Map;
 
 public class MainController {
-    private final InventarioService inventarioService;
+    public final InventarioService inventarioService;
     private final CompraService compraService;
     private final VentaService ventaService;
     private final ReporteService reportService;
+
+    public MainController() throws SQLException {
+        // 1) Instancio los DAOs
+        ProductoDao prodDao     = new ProductoDaoImpl();
+        ClienteDao cliDao       = new ClienteDaoImpl();
+        FacturaDao facDao       = new FacturaDaoImpl();
+        InvoiceItemDao itemDao  = new InvoiceItemDaoImpl();
+
+        // 2) Creo los servicios, inyectando dependencias
+        InventarioService invSvc = new InventarioService(prodDao);
+        CompraService compSvc    = new CompraService(facDao, itemDao, invSvc);
+        VentaService vendSvc     = new VentaService(facDao, itemDao, invSvc);
+        ReporteService repSvc     = new ReporteService(facDao);
+
+        // 3) Asigno a los campos del controlador
+        this.inventarioService = invSvc;
+        this.compraService     = compSvc;
+        this.ventaService      = vendSvc;
+        this.reportService     = repSvc;
+    }
 
     public MainController(InventarioService invSvc,
                           CompraService compSvc,
@@ -79,5 +100,32 @@ public class MainController {
     public Map<LocalDate, Double> obtenerGananciasRango(LocalDate desde, LocalDate hasta)
             throws SQLException {
         return reportService.gananciasPorRango(desde, hasta);
+    }
+
+    public List<Producto> getAllProducts() {
+        try {
+            return inventarioService.listarTodos();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error cargando productos", e);
+        }
+    }
+
+    public void createPurchase(List<InvoiceItem> items, String proveedor, String numeroFactura) {
+        try {
+            registrarCompra(items, proveedor, numeroFactura);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al registrar la compra", e);
+        }
+    }
+
+    public Map<LocalDate, Double> getProfitReport(LocalDate from, LocalDate to) {
+        try {
+            return obtenerGananciasRango(from, to);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener el reporte de ganancias", e);
+        }
+    }
+
+    public void createSale(List<InvoiceItem> items, Cliente c) {
     }
 }

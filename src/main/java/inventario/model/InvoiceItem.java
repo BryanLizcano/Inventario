@@ -5,6 +5,13 @@ public class InvoiceItem {
     Producto producto;
     int cantidad;
     double precioUnitario;
+
+    public InvoiceItem() {
+    }
+
+    public InvoiceItem(Producto p, int qty, double costoCompra) {
+    }
+
     double subTotal() { return cantidad * precioUnitario; }
 
     public int getId() {

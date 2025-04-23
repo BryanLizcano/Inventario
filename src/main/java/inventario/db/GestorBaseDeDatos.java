@@ -30,8 +30,8 @@ public class GestorBaseDeDatos {
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + "nombre TEXT NOT NULL,"
                     + "categoria TEXT NOT NULL,"
-                    + "costo_compra REAL NOT NULL CHECK(costo_compra >= 0),"
-                    + "precio_venta REAL NOT NULL CHECK(precio_venta >= 0),"
+                    + "costoCompra REAL NOT NULL CHECK(costoCompra >= 0),"
+                    + "precioVenta REAL NOT NULL CHECK(precioVenta >= 0),"
                     + "stock INTEGER NOT NULL DEFAULT 0 CHECK(stock >= 0)"
                     + ");");
             // Tabla de clientes

@@ -5,6 +5,12 @@ public class Cliente {
     String nombre;
     String contacto;
 
+    public Cliente() {
+    }
+
+    public Cliente(int i, String text, String s) {
+    }
+
     public int getId() {
         return id;
     }
