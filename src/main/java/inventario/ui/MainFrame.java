@@ -1,7 +1,6 @@
 package inventario.ui;
 
 import inventario.controller.MainController;
-import inventario.ui.swing.ModernTable;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
@@ -77,7 +76,7 @@ public class MainFrame extends JFrame {
         private void configureStyle() {
             setFont(new Font("Segoe UI", Font.PLAIN, 14));
             setBackground(new Color(45, 45, 45));
-            setForeground(Color.WHITE);
+            setForeground(Color.BLACK);
             setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         }
 
@@ -97,7 +96,7 @@ public class MainFrame extends JFrame {
 
             JLabel label = new JLabel(title);
             label.setFont(new Font("Segoe UI", Font.BOLD, 14));
-            label.setForeground(Color.WHITE);
+            label.setForeground(Color.BLACK);
             label.setBorder(BorderFactory.createEmptyBorder(8, 10, 8, 10));
 
             add(label, BorderLayout.CENTER);

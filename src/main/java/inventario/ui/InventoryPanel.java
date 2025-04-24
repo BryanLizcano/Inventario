@@ -47,7 +47,7 @@ public class InventoryPanel extends JPanel {
         JButton button = new JButton(text);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
         button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
+        button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(bgColor.darker()),
@@ -64,16 +64,6 @@ public class InventoryPanel extends JPanel {
             JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
     }
-
-    public Categoria obtenerCategoriaPorNombre(String nombre) {
-        try {
-            return Categoria.valueOf(nombre.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            // Si no se encuentra la categoría, puedes crear una nueva o manejar el error según sea necesario
-            return Categoria.DEFAULT;
-        }
-    }
-
 
     private void mostrarFormularioAgregarProducto() {
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10));
@@ -95,6 +85,10 @@ public class InventoryPanel extends JPanel {
         panel.add(precioVentaField);
         panel.add(createFormLabel("Stock:"));
         panel.add(stockField);
+
+        // Cambiar color del texto de botones y mensaje a negro
+        UIManager.put("Button.foreground", Color.BLACK);
+        UIManager.put("OptionPane.messageForeground", Color.BLACK);
 
         int result = JOptionPane.showConfirmDialog(this, panel, "Agregar Producto",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);

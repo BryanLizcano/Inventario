@@ -62,7 +62,8 @@ public class SalesPanel extends JPanel {
         btnLoad = createStyledButton("Cargar Productos", new Color(70, 130, 180));
         btnRegister = createStyledButton("Registrar Venta", new Color(56, 142, 60));
 
-        // Listeners...
+        btnRegister.addActionListener(e -> registerSale());
+        btnLoad.addActionListener(e -> loadProducts());
 
         buttons.add(btnLoad);
         buttons.add(btnRegister);
@@ -73,7 +74,7 @@ public class SalesPanel extends JPanel {
         JButton button = new JButton(text);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
         button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
+        button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(bgColor.darker()),

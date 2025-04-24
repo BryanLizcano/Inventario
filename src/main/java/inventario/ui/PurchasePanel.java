@@ -74,7 +74,7 @@ public class PurchasePanel extends JPanel {
         JButton button = new JButton(text);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
         button.setBackground(bgColor);
-        button.setForeground(Color.WHITE);
+        button.setForeground(Color.BLACK);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(bgColor.darker()),
@@ -114,6 +114,10 @@ public class PurchasePanel extends JPanel {
         for (int row : selectedRows) {
             Producto p = controller.getAllProducts().get(row);
             String qtyStr = JOptionPane.showInputDialog(this, "Cantidad para " + p.getNombre() + ":");
+            if (qtyStr == null || qtyStr.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "La cantidad no puede estar vacía.");
+                return;
+            }
             int qty = Integer.parseInt(qtyStr);
             items.add(new InvoiceItem(p, qty, p.getCostoCompra()));
         }
