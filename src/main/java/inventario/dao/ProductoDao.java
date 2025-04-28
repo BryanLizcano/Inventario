@@ -15,6 +15,7 @@ public interface ProductoDao {
     List<Producto> listarTodos() throws SQLException;
     List<Producto> buscarPorCategoria(Categoria c) throws SQLException;
     Producto obtenerPorId(int id) throws SQLException;
+    void desabilitar(int productoId) throws SQLException;
 }
 
 

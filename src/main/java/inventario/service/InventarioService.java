@@ -45,5 +45,12 @@ public class InventarioService {
         // 3. Persistir el nuevo stock
         productoDAO.actualizar(p);
     }
+
+    public void desbilitar(int productoId) throws SQLException {
+        Producto p = productoDAO.obtenerPorId(productoId);
+        if (p == null) throw new SQLException("Producto no encontrado con id=" + productoId);
+        p.setStock(p.getStock() - 1);
+        productoDAO.actualizar(p);
+    }
 }
 
